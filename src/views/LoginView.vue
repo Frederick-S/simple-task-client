@@ -26,7 +26,6 @@
             <v-btn
               :disabled="!valid || loading"
               :loading="loading"
-              class="mr-4"
               @click="login"
             >
               Login
