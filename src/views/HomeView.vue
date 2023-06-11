@@ -1,16 +1,15 @@
 <template>
   <div class="container">
     <Overlay :loading="loading"></Overlay>
-    <Navigation></Navigation>
-    <div class="container my-10">
-      Home
+    <div class="container">
+      <Navigation></Navigation>
     </div>
   </div>
 </template>
 
 <script>
-import Navigation from '@/components/Navigation.vue'
 import Overlay from '@/components/Overlay.vue'
+import Navigation from '@/components/Navigation.vue'
 
 export default {
   name: 'Home',

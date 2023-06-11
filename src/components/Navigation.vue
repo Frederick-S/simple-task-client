@@ -1,47 +1,56 @@
 <template>
-  <div class="container">
-    <v-app-bar
-      fixed
-      color="white"
-    >
-      <v-col cols="2"></v-col>
-      <v-toolbar-title class="navigation-tab pointer" @click="goToHome">Simple Task</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <div v-if="me">
-        <span>{{ me.name }}</span>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              icon
-              plain
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-menu</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item class="pointer" @click="$router.push('/admin/settings')"
-            >
-              <v-list-item-title>Settings</v-list-item-title>
-            </v-list-item>
-            <v-list-item class="pointer" @click="signOut"
-            >
-              <v-list-item-title>Sign out</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+  <v-navigation-drawer
+    absolute
+    permanent
+    left
+  >
+    <v-divider></v-divider>
+    <v-list dense>
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <template v-slot:append>
+      <div class="pa-2">
+        <v-btn block @click="signOut">
+          Sign out
+        </v-btn>
       </div>
-      <v-col cols="2"></v-col>
-    </v-app-bar>
-  </div>
+    </template>
+  </v-navigation-drawer>
 </template>
 
 <script>
 import axios from '@/axios'
 
 export default {
-  name: 'Navigation',
+  data () {
+    return {
+      items: [
+        {
+          title: 'Home',
+          icon: 'mdi-home'
+        },
+        {
+          title: 'Tasks',
+          icon: 'mdi-server'
+        },
+        {
+          title: 'Settings',
+          icon: 'mdi-account-settings'
+        }
+      ]
+    }
+  },
   computed: {
     me () {
       return this.$store.state.me
@@ -67,13 +76,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.pointer {
-  cursor: pointer;
-}
-
-.navigation-tab {
-  margin: 12px;
-}
-</style>
