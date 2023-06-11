@@ -4,20 +4,32 @@
     permanent
     left
   >
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="text-h6">
+          Simple Task
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     <v-divider></v-divider>
-    <v-list dense>
-      <v-list-item
-        v-for="item in items"
-        :key="item.title"
+    <v-list nav>
+      <v-list-item-group
+        v-model="selectedItem"
+        color="primary"
       >
-        <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
 
-        <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
     </v-list>
     <template v-slot:append>
       <div class="pa-2">
@@ -35,6 +47,7 @@ import axios from '@/axios'
 export default {
   data () {
     return {
+      selectedItem: 0,
       items: [
         {
           title: 'Home',
