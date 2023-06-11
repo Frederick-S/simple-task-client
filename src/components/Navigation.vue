@@ -54,9 +54,7 @@ export default {
           localStorage.removeItem('me')
           this.$store.commit('setMe', null)
 
-          if (this.$route.name !== 'Home') {
-            this.$router.push('/')
-          }
+          this.$router.push('/login')
         })
         .catch((error) => {
           console.error(error)
