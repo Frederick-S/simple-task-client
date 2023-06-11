@@ -53,7 +53,6 @@ export default {
         .then((response) => {
           localStorage.removeItem('me')
           this.$store.commit('setMe', null)
-
           this.$router.push('/login')
         })
         .catch((error) => {
