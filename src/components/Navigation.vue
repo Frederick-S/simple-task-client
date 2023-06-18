@@ -20,6 +20,7 @@
         <v-list-item
           v-for="item in items"
           :key="item.title"
+          @click="select(item)"
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -51,11 +52,13 @@ export default {
       items: [
         {
           title: 'Home',
-          icon: 'mdi-home'
+          icon: 'mdi-home',
+          href: '/'
         },
         {
           title: 'Tasks',
-          icon: 'mdi-server'
+          icon: 'mdi-server',
+          href: '/tasks'
         },
         {
           title: 'Settings',
@@ -83,8 +86,15 @@ export default {
           this.$toast.error(error.message)
         })
     },
-    goToHome () {
-      this.$router.push('/')
+    select (item, i) {
+      this.$router.push(item.href)
+    }
+  },
+  mounted () {
+    for (let i = 0; i < this.items.length; i++) {
+      if (this.$route.path === this.items[i].href) {
+        this.selectedItem = i
+      }
     }
   }
 }
