@@ -16,36 +16,47 @@
             lazy-validation
           >
             <v-text-field
-              v-model="title"
+              v-model="name"
               :counter="100"
-              :rules="titleRules"
-              label="标题*"
+              :rules="nameRules"
+              label="Name*"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="description"
+              :counter="255"
+              :rules="descriptionRules"
+              label="Description"
+            ></v-text-field>
+            <v-text-field
+              v-model="launchTemplateId"
+              :counter="100"
+              :rules="launchTemplateIdRules"
+              label="Launch Template Id*"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="launchTemplateVersion"
+              :counter="10"
+              :rules="launchTemplateVersionRules"
+              label="Launch Template Version*"
               required
             ></v-text-field>
             <v-textarea
               clearable
               clear-icon="mdi-close-circle"
-              label="描述*"
-              v-model="description"
-              :counter="250"
-              :rules="descriptionRules"
+              label="Startup Script*"
+              v-model="startupScript"
+              :rules="startupScriptRules"
+              required
             ></v-textarea>
-            <v-textarea
-              clearable
-              clear-icon="mdi-close-circle"
-              label="原文*"
-              v-model="content"
-              :counter="3000"
-              :rules="contentRules"
-            ></v-textarea>
-            <v-file-input
-              accept="audio/mp3"
-              v-model="audioFile"
-              :rules="audioFileRules"
-              label="听力文件（mp3 格式）*"
-              :show-size="true"
-            >
-            </v-file-input>
+            <v-text-field
+              v-model="timeoutSeconds"
+              :rules="timeoutSecondsRules"
+              label="Timeout Seconds*"
+              required
+              type="number"
+            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
@@ -83,24 +94,37 @@ export default {
       dialog: false,
       valid: true,
       loading: false,
-      title: '',
-      titleRules: [
-        v => !!v || '标题不能为空',
-        v => (v && v.length <= 100) || '标题不能超过100个字符'
+      name: '',
+      nameRules: [
+        v => !!v || 'Name could not be empty',
+        v => (v && v.length <= 100) || 'The length of name could not be longer than 100'
       ],
       description: '',
       descriptionRules: [
-        v => !!v || '描述不能为空',
-        v => (v && v.length <= 250) || '描述不能超过250个字符'
+        v => (!!v || (v && v.length <= 255)) || 'The length of description could not be longer than 255'
       ],
-      content: '',
-      contentRules: [
-        v => !!v || '原文不能为空',
-        v => (v && v.length <= 3000) || '原文不能超过3000个字符'
+      launchTemplateId: '',
+      launchTemplateIdRules: [
+        v => !!v || 'launchTemplateId could not be empty',
+        v => (v && v.length <= 100) || 'The length of launchTemplateId could not be longer than 100'
       ],
-      audioFile: null,
-      audioFileRules: [
-        v => !!v || '听力文件不能为空'
+      launchTemplateVersion: null,
+      launchTemplateVersionRules: [
+        v => !!v || 'launchTemplateVersion could not be empty',
+        v => (v && v.length <= 10) || 'The length of launchTemplateVersion could not be longer than 10'
+      ],
+      startupScript: null,
+      startupScriptRules: [
+        v => !!v || 'startupScript could not be empty'
+      ],
+      timeoutSeconds: null,
+      timeoutSecondsRules: [
+        v => !!v || 'timeoutSeconds could not be empty',
+        v => (v && parseInt(v) > 0) || 'The value of timeoutSeconds should be greater than 0'
+      ],
+      status: null,
+      statusRules: [
+        v => !!v || 'status could not be empty'
       ]
     }
   },
