@@ -57,6 +57,14 @@
               required
               type="number"
             ></v-text-field>
+            <v-select
+              v-model="status"
+              :items="statusList"
+              item-text="status"
+              item-value="value"
+              label="Status"
+              required
+            ></v-select>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
@@ -117,14 +125,27 @@ export default {
       startupScriptRules: [
         v => !!v || 'startupScript could not be empty'
       ],
-      timeoutSeconds: null,
+      timeoutSeconds: 300,
       timeoutSecondsRules: [
         v => !!v || 'timeoutSeconds could not be empty',
         v => (v && parseInt(v) > 0) || 'The value of timeoutSeconds should be greater than 0'
       ],
-      status: null,
+      status: {
+        status: 'Enabled',
+        value: 1
+      },
       statusRules: [
         v => !!v || 'status could not be empty'
+      ],
+      statusList: [
+        {
+          status: 'Enabled',
+          value: 1
+        },
+        {
+          status: 'Disabled',
+          value: 2
+        }
       ]
     }
   },
