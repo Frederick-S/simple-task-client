@@ -101,7 +101,7 @@ export default {
       ],
       description: '',
       descriptionRules: [
-        v => (!!v || (v && v.length <= 255)) || 'The length of description could not be longer than 255'
+        v => (!!v || v.length <= 255) || 'The length of description could not be longer than 255'
       ],
       launchTemplateId: '',
       launchTemplateIdRules: [
