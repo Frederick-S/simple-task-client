@@ -26,7 +26,8 @@
               v-model="description"
               :counter="255"
               :rules="descriptionRules"
-              label="Description"
+              label="Description*"
+              required
             ></v-text-field>
             <v-text-field
               v-model="launchTemplateId"
@@ -109,7 +110,8 @@ export default {
       ],
       description: '',
       descriptionRules: [
-        v => (!!v || v.length <= 255) || 'The length of description could not be longer than 255'
+        v => !!v || 'Description could not be empty',
+        v => (v && v.length <= 255) || 'The length of description could not be longer than 255'
       ],
       launchTemplateId: '',
       launchTemplateIdRules: [
@@ -161,35 +163,21 @@ export default {
 
       this.loading = true
 
-      const file = this.audioFile
-      const fileName = ''
+      const task = {
+        name: this.name,
+        description: this.description,
+        launchTemplateId: this.launchTemplateId,
+        launchTemplateVersion: this.launchTemplateVersion,
+        startupScript: this.startupScript,
+        timeoutSeconds: this.timeoutSeconds,
+        status: this.status.value
+      }
 
-      axios.get(`/s3/presignedUrl?permission=c&fileName=${fileName}`)
-        .then((presignedUrl) => {
-          return axios.put(presignedUrl, file, {
-            withCredentials: false
-          })
-            .then((_) => {
-              const index = presignedUrl.lastIndexOf('?')
-
-              return presignedUrl.substring(0, index)
-            })
-        })
-        .then((fileUrl) => {
-          const ting = {
-            programId: this.programId,
-            title: this.title,
-            description: this.description,
-            content: this.content,
-            audioUrl: fileUrl
-          }
-
-          return axios.post('/tings', ting)
-        })
+      axios.post('/tasks', task)
         .then((response) => {
           this.close()
 
-          eventBus.$emit(EventTypes.TING_CREATED, response)
+          eventBus.$emit(EventTypes.TASK_CREATED, response)
         })
         .catch((error) => {
           console.error(error)
