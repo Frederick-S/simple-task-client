@@ -132,10 +132,7 @@ export default {
         v => !!v || 'timeoutSeconds could not be empty',
         v => (v && parseInt(v) > 0) || 'The value of timeoutSeconds should be greater than 0'
       ],
-      status: {
-        status: 'Enabled',
-        value: 1
-      },
+      status: 1,
       statusRules: [
         v => !!v || 'status could not be empty'
       ],
@@ -170,7 +167,7 @@ export default {
         launchTemplateVersion: this.launchTemplateVersion,
         startupScript: this.startupScript,
         timeoutSeconds: this.timeoutSeconds,
-        status: this.status.value
+        status: this.status
       }
 
       axios.post('/tasks', task)
