@@ -62,7 +62,8 @@ export default {
         },
         {
           title: 'Settings',
-          icon: 'mdi-account-settings'
+          icon: 'mdi-account-settings',
+          href: '/settings'
         }
       ]
     }

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import HomeView from '@/views/HomeView.vue'
 import TaskListView from '@/views/TaskListView.vue'
+import SettingsView from '@/views/SettingsView.vue'
 import store from '@/store'
 
 Vue.use(VueRouter)
@@ -25,6 +26,14 @@ const routes = [
     path: '/tasks',
     name: 'TaskList',
     component: TaskListView,
+    meta: {
+      loginRequired: true
+    }
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: SettingsView,
     meta: {
       loginRequired: true
     }
