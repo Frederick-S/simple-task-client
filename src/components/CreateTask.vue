@@ -58,14 +58,6 @@
               required
               type="number"
             ></v-text-field>
-            <v-select
-              v-model="status"
-              :items="statusList"
-              item-text="status"
-              item-value="value"
-              label="Status"
-              required
-            ></v-select>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
@@ -75,14 +67,14 @@
             @click="create"
             class="ma-2"
           >
-            添加
+            Create
           </v-btn>
           <v-btn
             :disabled="loading"
             @click="close"
             class="ma-2"
           >
-            取消
+            Cancel
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -131,20 +123,6 @@ export default {
       timeoutSecondsRules: [
         v => !!v || 'timeoutSeconds could not be empty',
         v => (v && parseInt(v) > 0) || 'The value of timeoutSeconds should be greater than 0'
-      ],
-      status: 1,
-      statusRules: [
-        v => !!v || 'status could not be empty'
-      ],
-      statusList: [
-        {
-          status: 'Enabled',
-          value: 1
-        },
-        {
-          status: 'Disabled',
-          value: 2
-        }
       ]
     }
   },
@@ -166,8 +144,7 @@ export default {
         launchTemplateId: this.launchTemplateId,
         launchTemplateVersion: this.launchTemplateVersion,
         startupScript: this.startupScript,
-        timeoutSeconds: this.timeoutSeconds,
-        status: this.status
+        timeoutSeconds: this.timeoutSeconds
       }
 
       axios.post('/tasks', task)
