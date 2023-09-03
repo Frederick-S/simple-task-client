@@ -4,6 +4,7 @@
       v-model="dialog"
       persistent
       max-width="600px"
+      scrollable
     >
       <v-card>
         <v-card-title>
@@ -48,6 +49,26 @@
             <v-text-field
               v-model="schedule"
               label="Schedule"
+              disabled
+            ></v-text-field>
+            <v-text-field
+              v-model="createdBy"
+              label="Created By"
+              disabled
+            ></v-text-field>
+            <v-text-field
+              v-model="updatedBy"
+              label="Updated By"
+              disabled
+            ></v-text-field>
+            <v-text-field
+              v-model="createdAt"
+              label="Created At"
+              disabled
+            ></v-text-field>
+            <v-text-field
+              v-model="updatedAt"
+              label="Updated At"
               disabled
             ></v-text-field>
           </v-form>
@@ -106,6 +127,16 @@ export default {
         .then((response) => {
           const task = response.data
           this.name = task.name
+          this.description = task.description
+          this.launchTemplateId = task.launchTemplateId
+          this.launchTemplateVersion = task.launchTemplateVersion
+          this.startupScript = task.startupScript
+          this.timeoutSeconds = task.timeoutSeconds
+          this.schedule = task.schedule
+          this.createdBy = task.createdBy
+          this.updatedBy = task.updatedBy
+          this.createdAt = task.createdAt
+          this.updatedAt = task.updatedAt
         })
         .catch((error) => {
           console.error(error)
