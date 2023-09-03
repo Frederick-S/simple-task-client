@@ -58,6 +58,12 @@
               required
               type="number"
             ></v-text-field>
+            <v-text-field
+              v-model="schedule"
+              :rules="scheduleRules"
+              label="Schedule*"
+              required
+            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
@@ -123,6 +129,11 @@ export default {
       timeoutSecondsRules: [
         v => !!v || 'timeoutSeconds could not be empty',
         v => (v && parseInt(v) > 0) || 'The value of timeoutSeconds should be greater than 0'
+      ],
+      schedule: '',
+      scheduleRules: [
+        v => !!v || 'schedule could not be empty',
+        v => (v && v.length <= 100) || 'The length of schedule could not be longer than 100'
       ]
     }
   },
@@ -144,7 +155,8 @@ export default {
         launchTemplateId: this.launchTemplateId,
         launchTemplateVersion: this.launchTemplateVersion,
         startupScript: this.startupScript,
-        timeoutSeconds: this.timeoutSeconds
+        timeoutSeconds: this.timeoutSeconds,
+        schedule: this.schedule
       }
 
       axios.post('/tasks', task)

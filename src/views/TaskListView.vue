@@ -28,6 +28,7 @@
                   <th class="text-center">Id</th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Description</th>
+                  <th class="text-center">Schedule</th>
                   <th class="text-center">Status</th>
                   <th class="text-center">Created By</th>
                   <th class="text-center">Updated By</th>
@@ -41,6 +42,7 @@
                   <td class="text-center">{{ task.id }}</td>
                   <td class="text-center">{{ task.name }}</td>
                   <td class="text-center">{{ task.description }}</td>
+                  <td class="text-center">{{ task.schedule }}</td>
                   <td class="text-center">{{ task.status === 1 ? 'Enabled' : 'Disabled' }}</td>
                   <td class="text-center">{{ task.createdBy }}</td>
                   <td class="text-center">{{ task.updatedBy }}</td>
