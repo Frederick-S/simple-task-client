@@ -21,77 +21,93 @@
             </div>
           </div>
           <v-row justify="center" v-if="!loading">
-            <v-simple-table v-if="tasks.length > 0">
-              <template v-slot:default>
-                <thead>
-                <tr>
-                  <th class="text-center">Id</th>
-                  <th class="text-center">Name</th>
-                  <th class="text-center">Description</th>
-                  <th class="text-center">Schedule</th>
-                  <th class="text-center">Status</th>
-                  <th class="text-center">Created By</th>
-                  <th class="text-center">Updated By</th>
-                  <th class="text-center">Created At</th>
-                  <th class="text-center">Updated At</th>
-                  <th class="text-center">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(task) in tasks" :key="task.id">
-                  <td class="text-center">{{ task.id }}</td>
-                  <td class="text-center">{{ task.name }}</td>
-                  <td class="text-center">{{ task.description }}</td>
-                  <td class="text-center">{{ task.schedule }}</td>
-                  <td class="text-center">{{ task.status === 1 ? 'Enabled' : 'Disabled' }}</td>
-                  <td class="text-center">{{ task.createdBy }}</td>
-                  <td class="text-center">{{ task.updatedBy }}</td>
-                  <td class="text-center">{{ task.createdAt }}</td>
-                  <td class="text-center">{{ task.updatedAt }}</td>
-                  <td class="text-center">
-                    <v-menu offset-y>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          icon
-                          plain
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon>mdi-cog</v-icon>
-                        </v-btn>
-                      </template>
-                      <v-list>
-                        <v-list-item class="pointer" @click="viewTask(task)"
-                        >
-                          <v-list-item-title>View</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item class="pointer" @click="editTask(task)"
-                        >
-                          <v-list-item-title>Edit</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item class="pointer" @click="deleteTask(task)"
-                        >
-                          <v-list-item-title>Delete</v-list-item-title>
-                        </v-list-item>
-                        <template v-if="task.status === 1">
-                          <v-list-item class="pointer" @click="disableTask(task)"
+            <div class="container" v-if="tasks.length > 0">
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                  <tr>
+                    <th class="text-center">Id</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Schedule</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Created By</th>
+                    <th class="text-center">Updated By</th>
+                    <th class="text-center">Created At</th>
+                    <th class="text-center">Updated At</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="(task) in tasks" :key="task.id">
+                    <td class="text-center">{{ task.id }}</td>
+                    <td class="text-center">{{ task.name }}</td>
+                    <td class="text-center">{{ task.description }}</td>
+                    <td class="text-center">{{ task.schedule }}</td>
+                    <td class="text-center">{{ task.status === 1 ? 'Enabled' : 'Disabled' }}</td>
+                    <td class="text-center">{{ task.createdBy }}</td>
+                    <td class="text-center">{{ task.updatedBy }}</td>
+                    <td class="text-center">{{ task.createdAt }}</td>
+                    <td class="text-center">{{ task.updatedAt }}</td>
+                    <td class="text-center">
+                      <v-menu offset-y>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            icon
+                            plain
+                            v-bind="attrs"
+                            v-on="on"
                           >
-                            <v-list-item-title>Disable</v-list-item-title>
-                          </v-list-item>
+                            <v-icon>mdi-cog</v-icon>
+                          </v-btn>
                         </template>
-                        <template v-else>
-                          <v-list-item class="pointer" @click="enableTask(task)"
+                        <v-list>
+                          <v-list-item class="pointer" @click="viewTask(task)"
                           >
-                            <v-list-item-title>Enable</v-list-item-title>
+                            <v-list-item-title>View</v-list-item-title>
                           </v-list-item>
-                        </template>
-                      </v-list>
-                    </v-menu>
-                  </td>
-                </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
+                          <v-list-item class="pointer" @click="editTask(task)"
+                          >
+                            <v-list-item-title>Edit</v-list-item-title>
+                          </v-list-item>
+                          <v-list-item class="pointer" @click="deleteTask(task)"
+                          >
+                            <v-list-item-title>Delete</v-list-item-title>
+                          </v-list-item>
+                          <template v-if="task.status === 1">
+                            <v-list-item class="pointer" @click="disableTask(task)"
+                            >
+                              <v-list-item-title>Disable</v-list-item-title>
+                            </v-list-item>
+                          </template>
+                          <template v-else>
+                            <v-list-item class="pointer" @click="enableTask(task)"
+                            >
+                              <v-list-item-title>Enable</v-list-item-title>
+                            </v-list-item>
+                          </template>
+                        </v-list>
+                      </v-menu>
+                    </td>
+                  </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <v-container>
+                <v-row justify="center">
+                  <v-col cols="8">
+                    <v-container class="max-width">
+                      <v-pagination
+                        v-model="page"
+                        class="my-4"
+                        :length="totalPages"
+                        :total-visible="5"
+                      ></v-pagination>
+                    </v-container>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </div>
             <div class="container" v-else>
               <p class="text-body-1 text-center">No tasks</p>
             </div>
@@ -127,18 +143,24 @@ export default {
   data () {
     return {
       loading: true,
+      tasks: [],
       page: 1,
-      pageSize: 20,
-      tasks: []
+      pageSize: 10,
+      totalPages: 0
     }
   },
   methods: {
-    getTasks () {
+    getTasks (page) {
       this.loading = true
+
+      if (page) {
+        this.page = page
+      }
 
       axios.get(`/tasks?page=${this.page}&pageSize=${this.pageSize}`)
         .then(data => {
           this.tasks = data.data
+          this.totalPages = data.meta.totalPages
         })
         .catch(error => {
           console.error(error)
@@ -170,7 +192,9 @@ export default {
   created () {
     this.getTasks()
 
-    eventBus.$on(EventTypes.TASK_CREATED, this.getTasks)
+    eventBus.$on(EventTypes.TASK_CREATED, () => {
+      this.getTasks(1)
+    })
   }
 }
 </script>
