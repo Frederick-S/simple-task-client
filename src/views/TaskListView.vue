@@ -133,6 +133,26 @@ export default {
     }
   },
   methods: {
+    getTasks () {
+      this.loading = true
+
+      axios.get(`/tasks?page=${this.page}&pageSize=${this.pageSize}`)
+        .then(data => {
+          this.tasks = data
+        })
+        .catch(error => {
+          console.error(error)
+
+          if (error instanceof UnauthorizedError) {
+            this.$router.push('/login')
+          } else {
+            this.$toast.error(error.message)
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
     createTask () {
       eventBus.$emit(EventTypes.CREATE_TASK)
     },
@@ -148,22 +168,9 @@ export default {
     }
   },
   created () {
-    axios.get(`/tasks?page=${this.page}&pageSize=${this.pageSize}`)
-      .then(data => {
-        this.tasks = data
-      })
-      .catch(error => {
-        console.error(error)
+    this.getTasks()
 
-        if (error instanceof UnauthorizedError) {
-          this.$router.push('/login')
-        } else {
-          this.$toast.error(error.message)
-        }
-      })
-      .finally(() => {
-        this.loading = false
-      })
+    eventBus.$on(EventTypes.TASK_CREATED, this.getTasks)
   }
 }
 </script>
