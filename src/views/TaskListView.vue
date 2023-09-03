@@ -66,11 +66,11 @@
                           >
                             <v-list-item-title>View</v-list-item-title>
                           </v-list-item>
-                          <v-list-item class="pointer" @click="editTask(task)"
+                          <v-list-item :disabled="task.status === 1" class="pointer" @click="editTask(task)"
                           >
                             <v-list-item-title>Edit</v-list-item-title>
                           </v-list-item>
-                          <v-list-item class="pointer" @click="deleteTask(task)"
+                          <v-list-item :disabled="task.status === 1" class="pointer" @click="deleteTask(task)"
                           >
                             <v-list-item-title>Delete</v-list-item-title>
                           </v-list-item>
@@ -210,8 +210,40 @@ export default {
         })
     },
     disableTask (task) {
+      axios.post(`/tasks/${task.id}/disable`)
+        .then(data => {
+          this.getTasks()
+        })
+        .catch(error => {
+          console.error(error)
+
+          if (error instanceof UnauthorizedError) {
+            this.$router.push('/login')
+          } else {
+            this.$toast.error(error.message)
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     enableTask (task) {
+      axios.post(`/tasks/${task.id}/enable`)
+        .then(data => {
+          this.getTasks()
+        })
+        .catch(error => {
+          console.error(error)
+
+          if (error instanceof UnauthorizedError) {
+            this.$router.push('/login')
+          } else {
+            this.$toast.error(error.message)
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     goToPage (page) {
       this.getTasks(page)
