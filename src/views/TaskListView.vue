@@ -102,6 +102,7 @@
                         class="my-4"
                         :length="totalPages"
                         :total-visible="5"
+                        @input="goToPage"
                       ></v-pagination>
                     </v-container>
                   </v-col>
@@ -187,6 +188,9 @@ export default {
     disableTask (task) {
     },
     enableTask (task) {
+    },
+    goToPage (page) {
+      this.getTasks(page)
     }
   },
   created () {
