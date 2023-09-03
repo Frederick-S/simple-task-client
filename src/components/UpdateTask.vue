@@ -8,7 +8,7 @@
     >
       <v-card>
         <v-card-title>
-          <span class="text-h5">Create Task</span>
+          <span class="text-h5">Update Task</span>
         </v-card-title>
         <v-card-text>
           <v-form
@@ -16,6 +16,11 @@
             v-model="valid"
             lazy-validation
           >
+            <v-text-field
+              v-model="id"
+              label="ID"
+              disabled
+            ></v-text-field>
             <v-text-field
               v-model="name"
               :counter="100"
@@ -71,10 +76,10 @@
           <v-btn
             :disabled="!valid || loading"
             :loading="loading"
-            @click="createTask"
+            @click="updateTask"
             class="ma-2"
           >
-            Create
+            Update
           </v-btn>
           <v-btn
             :disabled="loading"
@@ -96,12 +101,13 @@ import UnauthorizedError from '@/error/unauthorized-error'
 import EventTypes from '@/event-types'
 
 export default {
-  name: 'CreateTask',
+  name: 'UpdateTask',
   data () {
     return {
       dialog: false,
       valid: true,
       loading: false,
+      id: 0,
       name: '',
       nameRules: [
         v => !!v || 'Name could not be empty',
@@ -143,7 +149,36 @@ export default {
       this.$refs.form.reset()
       this.dialog = false
     },
-    createTask () {
+    getTask (id) {
+      this.loading = true
+
+      axios.get(`/tasks/${id}`)
+        .then((response) => {
+          const task = response.data
+          this.id = task.id
+          this.name = task.name
+          this.description = task.description
+          this.launchTemplateId = task.launchTemplateId
+          this.launchTemplateVersion = task.launchTemplateVersion
+          this.startupScript = task.startupScript
+          this.timeoutSeconds = task.timeoutSeconds
+          this.schedule = task.schedule
+          this.status = task.status
+        })
+        .catch((error) => {
+          console.error(error)
+
+          if (error instanceof UnauthorizedError) {
+            this.$router.push('/login')
+          } else {
+            this.$toast.error(error.message)
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    updateTask () {
       if (!this.$refs.form.validate()) {
         return
       }
@@ -151,6 +186,7 @@ export default {
       this.loading = true
 
       const task = {
+        id: this.id,
         name: this.name,
         description: this.description,
         launchTemplateId: this.launchTemplateId,
@@ -160,11 +196,11 @@ export default {
         schedule: this.schedule
       }
 
-      axios.post('/tasks', task)
+      axios.put(`/tasks/${this.id}`, task)
         .then((response) => {
           this.close()
 
-          eventBus.$emit(EventTypes.TASK_CREATED, response.data)
+          eventBus.$emit(EventTypes.TASK_UPDATED, response.data)
         })
         .catch((error) => {
           console.error(error)
@@ -181,8 +217,9 @@ export default {
     }
   },
   created () {
-    eventBus.$on(EventTypes.CREATE_TASK, () => {
+    eventBus.$on(EventTypes.UPDATE_TASK, (id) => {
       this.dialog = true
+      this.getTask(id)
     })
   }
 }

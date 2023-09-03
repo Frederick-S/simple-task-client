@@ -16,6 +16,11 @@
             lazy-validation
           >
             <v-text-field
+              v-model="id"
+              label="ID"
+              disabled
+            ></v-text-field>
+            <v-text-field
               v-model="name"
               label="Name"
               disabled
@@ -56,26 +61,6 @@
               :items="statusList"
               disabled
             ></v-select>
-            <v-text-field
-              v-model="createdBy"
-              label="Created By"
-              disabled
-            ></v-text-field>
-            <v-text-field
-              v-model="updatedBy"
-              label="Updated By"
-              disabled
-            ></v-text-field>
-            <v-text-field
-              v-model="createdAt"
-              label="Created At"
-              disabled
-            ></v-text-field>
-            <v-text-field
-              v-model="updatedAt"
-              label="Updated At"
-              disabled
-            ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
@@ -113,10 +98,6 @@ export default {
       timeoutSeconds: 300,
       schedule: '',
       status: 0,
-      createdBy: 0,
-      updatedBy: 0,
-      createdAt: '',
-      updatedAt: '',
       statusList: [
         {
           text: 'Enabled',
@@ -135,12 +116,12 @@ export default {
       this.dialog = false
     },
     getTask (id) {
-      this.id = id
       this.loading = true
 
-      axios.get(`/tasks/${this.id}`)
+      axios.get(`/tasks/${id}`)
         .then((response) => {
           const task = response.data
+          this.id = task.id
           this.name = task.name
           this.description = task.description
           this.launchTemplateId = task.launchTemplateId
@@ -149,10 +130,6 @@ export default {
           this.timeoutSeconds = task.timeoutSeconds
           this.schedule = task.schedule
           this.status = task.status
-          this.createdBy = task.createdBy
-          this.updatedBy = task.updatedBy
-          this.createdAt = task.createdAt
-          this.updatedAt = task.updatedAt
         })
         .catch((error) => {
           console.error(error)

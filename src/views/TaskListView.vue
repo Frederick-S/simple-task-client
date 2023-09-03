@@ -118,6 +118,7 @@
     </div>
     <CreateTask></CreateTask>
     <ViewTask></ViewTask>
+    <UpdateTask></UpdateTask>
   </div>
 </template>
 
@@ -128,6 +129,7 @@ import axios from '@/axios'
 import UnauthorizedError from '@/error/unauthorized-error'
 import CreateTask from '@/components/CreateTask.vue'
 import ViewTask from '@/components/ViewTask.vue'
+import UpdateTask from '@/components/UpdateTask.vue'
 import eventBus from '@/event-bus'
 import EventTypes from '@/event-types'
 
@@ -137,7 +139,8 @@ export default {
     Overlay,
     Navigation,
     CreateTask,
-    ViewTask
+    ViewTask,
+    UpdateTask
   },
   computed: {
     me () {
@@ -186,6 +189,7 @@ export default {
       eventBus.$emit(EventTypes.VIEW_TASK, task.id)
     },
     editTask (task) {
+      eventBus.$emit(EventTypes.UPDATE_TASK, task.id)
     },
     deleteTask (task) {
       if (!window.confirm(`Are you sure to delete ${task.name}？`)) {
@@ -254,6 +258,9 @@ export default {
 
     eventBus.$on(EventTypes.TASK_CREATED, () => {
       this.getTasks(1)
+    })
+    eventBus.$on(EventTypes.TASK_UPDATED, () => {
+      this.getTasks()
     })
   }
 }
