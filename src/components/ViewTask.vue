@@ -51,6 +51,11 @@
               label="Schedule"
               disabled
             ></v-text-field>
+            <v-select
+              v-model="status"
+              :items="statusList"
+              disabled
+            ></v-select>
             <v-text-field
               v-model="createdBy"
               label="Created By"
@@ -111,7 +116,17 @@ export default {
       createdBy: 0,
       updatedBy: 0,
       createdAt: '',
-      updatedAt: ''
+      updatedAt: '',
+      statusList: [
+        {
+          text: 'Enabled',
+          value: 1
+        },
+        {
+          text: 'Disabled',
+          value: 2
+        }
+      ]
     }
   },
   methods: {
@@ -133,6 +148,7 @@ export default {
           this.startupScript = task.startupScript
           this.timeoutSeconds = task.timeoutSeconds
           this.schedule = task.schedule
+          this.status = task.status
           this.createdBy = task.createdBy
           this.updatedBy = task.updatedBy
           this.createdAt = task.createdAt
