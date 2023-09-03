@@ -163,7 +163,7 @@ export default {
         .then((response) => {
           this.close()
 
-          eventBus.$emit(EventTypes.TASK_CREATED, response)
+          eventBus.$emit(EventTypes.TASK_CREATED, response.data)
         })
         .catch((error) => {
           console.error(error)

@@ -71,8 +71,9 @@ export default {
 
       axios.post('/auth/login', user)
         .then((response) => {
-          localStorage.setItem('me', JSON.stringify(response))
-          this.$store.commit('setMe', response)
+          const me = response.data
+          localStorage.setItem('me', JSON.stringify(me))
+          this.$store.commit('setMe', me)
           this.$router.push('/')
         })
         .catch((error) => {

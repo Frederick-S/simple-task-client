@@ -138,7 +138,7 @@ export default {
 
       axios.get(`/tasks?page=${this.page}&pageSize=${this.pageSize}`)
         .then(data => {
-          this.tasks = data
+          this.tasks = data.data
         })
         .catch(error => {
           console.error(error)
