@@ -188,6 +188,26 @@ export default {
     editTask (task) {
     },
     deleteTask (task) {
+      if (!window.confirm(`Are you sure to delete ${task.name}？`)) {
+        return
+      }
+
+      axios.delete(`/tasks/${task.id}`)
+        .then(data => {
+          this.getTasks()
+        })
+        .catch(error => {
+          console.error(error)
+
+          if (error instanceof UnauthorizedError) {
+            this.$router.push('/login')
+          } else {
+            this.$toast.error(error.message)
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     disableTask (task) {
     },
