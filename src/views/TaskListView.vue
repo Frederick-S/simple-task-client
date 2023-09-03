@@ -117,6 +117,7 @@
       </v-row>
     </div>
     <CreateTask></CreateTask>
+    <ViewTask></ViewTask>
   </div>
 </template>
 
@@ -126,6 +127,7 @@ import Navigation from '@/components/Navigation.vue'
 import axios from '@/axios'
 import UnauthorizedError from '@/error/unauthorized-error'
 import CreateTask from '@/components/CreateTask.vue'
+import ViewTask from '@/components/ViewTask.vue'
 import eventBus from '@/event-bus'
 import EventTypes from '@/event-types'
 
@@ -134,7 +136,8 @@ export default {
   components: {
     Overlay,
     Navigation,
-    CreateTask
+    CreateTask,
+    ViewTask
   },
   computed: {
     me () {
@@ -179,7 +182,8 @@ export default {
     createTask () {
       eventBus.$emit(EventTypes.CREATE_TASK)
     },
-    viewTask () {
+    viewTask (task) {
+      eventBus.$emit(EventTypes.VIEW_TASK, task.id)
     },
     editTask (task) {
     },
